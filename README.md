@@ -1,10 +1,10 @@
 # spark2
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library intended to breath some life into gems with a uniform, composable API.
 
 ## Usage
 
-FIXME
+The top-level folder, spark2, should be opened as an [obsidian](https://obsidian.md) vault for enhanced access to .md files.
 
 ## License
 
