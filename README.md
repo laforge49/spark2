@@ -2,6 +2,12 @@
 
 A Clojure library intended to breath some life into gems with a uniform, composable API.
 
+Previously, the uniform API simply mandated that env, a persistent map, be passed as the only argument. In spark2, parameters are relegated to a second argument and (a potentially updated) first argument is the return value.
+
+And where previously the value of each gem was held in its own atom under env, those atoms have been dropped and the gems held directly under the first argument, which has been renamed from env to gems.
+
+Conformant functions can now be composed using the the clojure threading function, ->, or collected in a vector for subsequent evaluation as part of a performant journal entry gem.
+
 ## Usage
 
 The top-level folder, spark2, should be opened as an [obsidian](https://obsidian.md) vault for enhanced access to .md files.
