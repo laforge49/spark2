@@ -1,6 +1,6 @@
 (ns spark2.core)
 
-(defn -main
-  [& args]
-  (println "*** Begin Run ***")
-  (println "*** End Run ***"))
+(defn foo
+  "I don't do a whole lot."
+  [x]
+  (println x "Hello, World!"))
