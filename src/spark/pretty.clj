@@ -10,17 +10,19 @@
   (let [prefix (get params :prefix "")
         unprefix (blanks (count prefix))
         value (:value params)]
-    [gems [value]]))
+    (cond
+      :else
+      [gems [(string/join [prefix (pr-str value)])]])))
 
 (defn debug=
   [gems params]
   (let [path (:path params)
         value (get-in gems path)
-        params (into params {:value value
+        params (into params {:value  value
                              :prefix ""})
         [gems lines] (asString= gems params)]
     [gems (string/join "\n" (into ["---"]
-                                     lines))]))
+                                  lines))]))
 
 (defn debug
   [gems params]
