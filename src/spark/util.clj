@@ -5,17 +5,14 @@
   [count]
   (string/join (repeat count " ")))
 
-(defn rth
-  [vec index]
-  (if (< index 0)
-    (nth vec (- (count vec) index))
-    (nth vec index)))
-
-(defn rassoc
-  [vec index value]
-  (if (< index 0)
-    (assoc vec (- (count vec) index) value)
-    (assoc vec index value)))
+(defn params-into
+  [params-stack index params]
+  (let [index (if (< index    0)
+                (- (count params-stack) index)
+                index)
+        old-params (get params-stack index)
+        revised-params (into old-params params)]
+    (assoc params-stack index revised-params)))
 
 (defn get-param
   ([param-stack key]
