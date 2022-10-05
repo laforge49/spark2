@@ -33,8 +33,9 @@
          (recur (pop param-stack) key not-found))))))
 
 (defn eval-req
-  [gems params-stack req]
-  (let [req (if (string? req)
+  [gems params-stack]
+  (let [req (get-param params-stack :req)
+        req (if (string? req)
               (symbol req)
               req)
         req (if (symbol? req)
@@ -53,7 +54,8 @@
                                     (if mrg
                                       (params-into params-stack index req)
                                       (params-replace params-stack index req)))
-                                  (eval-req gems params-stack req)))
+                                  (eval-req gems
+                                            (params-into params-stack -1 {:req req}))))
                               [gems params-stack]
                               reqs)
         params-stack (pop params-stack)]
