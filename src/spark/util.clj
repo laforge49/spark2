@@ -16,3 +16,14 @@
   (if (< index 0)
     (assoc vec (- (count vec) index) value)
     (assoc vec index value)))
+
+(defn get-param
+  ([param-stack key]
+   (get-param param-stack key nil))
+  ([param-stack key not-found]
+   (if (empty? param-stack)
+     not-found
+     (let [top (last param-stack)]
+       (if (contains? top key)
+         (get top key)
+         (recur (pop param-stack) key not-found))))))
