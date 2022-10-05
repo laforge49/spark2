@@ -14,6 +14,13 @@
         revised-params (into old-params params)]
     (assoc params-stack index revised-params)))
 
+(defn params-replace
+  [params-stack index params]
+  (let [index (if (< index    0)
+                (- (count params-stack) index)
+                index)]
+    (assoc params-stack index params)))
+
 (defn get-param
   ([param-stack key]
    (get-param param-stack key nil))
