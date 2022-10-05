@@ -48,7 +48,11 @@
         [gems params-stack] (reduce
                               (fn [[gems params-stack] req]
                                 (if (map? req)
-                                  (params-replace params-stack (get req :index -1) req)
+                                  (let [mrg (get req :into false)
+                                        index (get req :index -1)]
+                                    (if mrg
+                                      (params-into params-stack index req)
+                                      (params-replace params-stack index req)))
                                   (eval-req gems params-stack req)))
                               [gems params-stack]
                               reqs)
