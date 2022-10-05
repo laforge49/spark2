@@ -44,8 +44,9 @@
     (req gems params-stack)))
 
 (defn eval-reqs
-  [gems params-stack reqs]
+  [gems params-stack]
   (let [params-stack (conj params-stack {})
+        reqs (get-param params-stack :reqs)
         [gems params-stack] (reduce
                               (fn [[gems params-stack] req]
                                 (if (map? req)
