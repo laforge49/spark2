@@ -31,3 +31,13 @@
        (if (contains? top key)
          (get top key)
          (recur (pop param-stack) key not-found))))))
+
+(defn eval-item
+  [req gems params-stack]
+  (let [req (if (string? req)
+              (symbol req)
+              req)
+        req (if (symbol? req)
+              (resolve req)
+              req)]
+    (req gems params-stack)))
