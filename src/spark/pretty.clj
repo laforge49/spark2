@@ -1,14 +1,11 @@
 (ns spark.pretty
-  (:require [clojure.string :as string]))
-
-(defn blanks
-  [count]
-  (string/join (repeat count " ")))
+  (:require [clojure.string :as string]
+            [spark.util :as util]))
 
 (defn asString=
   [gems params]
   (let [prefix (get params :prefix "")
-        unprefix (blanks (count prefix))
+        unprefix (util/blanks (count prefix))
         value (:value params)]
     (cond
       :else
