@@ -32,8 +32,8 @@
          (get top key)
          (recur (pop param-stack) key not-found))))))
 
-(defn eval-item
-  [req gems params-stack]
+(defn eval-req
+  [gems params-stack req]
   (let [req (if (string? req)
               (symbol req)
               req)
@@ -41,3 +41,16 @@
               (resolve req)
               req)]
     (req gems params-stack)))
+
+(defn eval-reqs
+  [gems params-stack reqs]
+  (let [params-stack (conj params-stack {})
+        [gems params-stack] (reduce
+                              (fn [[gems params-stack] req]
+                                (if (map? req)
+                                  (params-replace params-stack (get req :index -1) req)
+                                  (eval-req gems params-stack req)))
+                              [gems params-stack]
+                              reqs)
+        params-stack (pop params-stack)]
+    gems params-stack))
