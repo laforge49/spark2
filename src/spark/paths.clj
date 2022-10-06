@@ -1,6 +1,5 @@
 (ns spark.paths
-  (:require [[spark.util :as util]]
-            [spark.util :as util]))
+  (:require [spark.util :as util]))
 
 (defn gem-path
   [params-stack]
