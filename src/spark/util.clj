@@ -43,6 +43,13 @@
               func)]
     (func gems params-stack)))
 
+(defn eval-request
+  [gems params-stack]
+  (let [request-kw (get-param params-stack :request-kw)
+        gem-kw (get-param params-stack :gem-kw)
+        gem (get gems gem-kw)
+        ]))
+
 #_ (defn eval-reqs
   [gems params-stack]
   (let [params-stack (conj params-stack {})
