@@ -32,18 +32,18 @@
          (get top key)
          (recur (pop param-stack) key not-found))))))
 
-(defn eval-req
+(defn eval-func
   [gems params-stack]
-  (let [req (get-param params-stack :req)
-        req (if (string? req)
-              (symbol req)
-              req)
-        req (if (symbol? req)
-              (resolve req)
-              req)]
-    (req gems params-stack)))
+  (let [func (get-param params-stack :func)
+        func (if (string? func)
+              (symbol func)
+              func)
+        func (if (symbol? func)
+              (resolve func)
+              func)]
+    (func gems params-stack)))
 
-(defn eval-reqs
+#_ (defn eval-reqs
   [gems params-stack]
   (let [params-stack (conj params-stack {})
         reqs (get-param params-stack :reqs)
