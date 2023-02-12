@@ -7,17 +7,18 @@
   (let [prefix (get params :prefix "")
         unprefix (util/blanks (count prefix))
         value (:value params)]
-    (cond
-      :else
-      (let [lines [(string/join [prefix (pr-str value)])]]
-      [gems (into params {:pretty/lines lines})]))))
+    (let [lines
+          (cond
+            :else
+            [(string/join [prefix (pr-str value)])])]
+      [gems (into params {:pretty/lines lines})])))
 
 (defn debug=
   [gems params]
   (let [path (:path params)
         value (get-in gems path)
         local (into params {:value  value
-                             :prefix ""})
+                            :prefix ""})
         [gems local] (asString= gems local)
         txt (string/join "\n" (into ["---"] (:pretty/lines local)))]
     [gems (into params {:pretty/txt txt})]))
