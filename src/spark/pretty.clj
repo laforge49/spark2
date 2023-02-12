@@ -9,20 +9,21 @@
         value (:value params)]
     (cond
       :else
-      [gems [(string/join [prefix (pr-str value)])]])))
+      (let [lines [(string/join [prefix (pr-str value)])]]
+      [gems (into params {:pretty/lines lines})]))))
 
 (defn debug=
   [gems params]
   (let [path (:path params)
         value (get-in gems path)
-        params (into params {:value  value
+        local (into params {:value  value
                              :prefix ""})
-        [gems lines] (asString= gems params)]
-    [gems (string/join "\n" (into ["---"]
-                                  lines))]))
+        [gems local] (asString= gems local)
+        txt (string/join "\n" (into ["---"] (:pretty/lines local)))]
+    [gems (into params {:pretty/txt txt})]))
 
 (defn debug
   [gems params]
-  (let [[gems txt] (debug= gems params)]
-    (println txt)
-    gems))
+  (let [[gems local] (debug= gems params)]
+    (println (:pretty/txt local))
+    [gems params]))

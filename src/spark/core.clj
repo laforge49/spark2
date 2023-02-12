@@ -9,7 +9,7 @@
   [& args]
   (println "Start")
   (try
-    (let [env (boot/create-gems {} {})])
+    (let [[env params] (boot/create-gems {} {:main/args args})])
     (println "Fin")
     (catch Exception e
       (stacktrace/print-stack-trace e))))

@@ -10,13 +10,14 @@
         gems
         (assoc gems gem-kw gem)
         ]
-    gems))
+    [gems params]))
 
 (defn create-gems
   [gems params]
-  (let [params (into params
+  (let [local (into params
                      {:gem-kw :gem/facets-schema})
-        gems (create-gem gems params)
-        gems (pretty/debug gems (into params
-                                      {:path [:gem/facets-schema]}))]
-    gems))
+        [gems local] (create-gem gems local)
+        [gems local] (pretty/debug gems (into local
+                                      {:path [:gem/facets-schema]}))
+        ]
+    [gems params]))
