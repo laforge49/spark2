@@ -31,3 +31,23 @@
          path (:access/path local)
          path (conj path role-name)]
      [gems (into params {:access/path path})])))
+
+
+(defn requests-path
+  [gems params]
+  (let [[gems local]
+        (role-path gems params)
+        path (:access/path local)
+        path (conj path :role/requests)]
+    [gems (into params {:access/path path})]))
+
+
+(defn request-path
+  ([gems params]
+   (role-path gems params (:access/request-name params)))
+  ([gems params request-name]
+   (let [[gems local]
+         (requests-path gems params)
+         path (:access/path local)
+         path (conj path request-name)]
+     [gems (into params {:access/path path})])))
