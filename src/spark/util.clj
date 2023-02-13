@@ -1,10 +1,6 @@
 (ns spark.util
   (:require [clojure.string :as string]))
 
-(defn blanks
-  [count]
-  (string/join (repeat count " ")))
-
 (defn params-into
   [params-stack index params]
   (let [index (if (< index    0)

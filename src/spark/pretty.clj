@@ -1,6 +1,10 @@
 (ns spark.pretty
   (:require [clojure.string :as string]))
 
+(defn blanks
+  [count]
+  (string/join (repeat count " ")))
+
 (defn simpleScalar=
   ([gems params]
    (simpleScalar= gems params
