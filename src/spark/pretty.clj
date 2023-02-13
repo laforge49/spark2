@@ -1,6 +1,5 @@
 (ns spark.pretty
-  (:require [clojure.string :as string]
-            [spark.util :as util]))
+  (:require [clojure.string :as string]))
 
 (defn simpleScalar=
   ([gems params]
@@ -30,7 +29,7 @@
              (fn [[gems local lines] [k v]]
                (if (structure? v)
                  (let [[gems local]
-                       (simpleScalar= gems params k)
+                       (simpleScalar= gems local k)
                        simpleKey (:pretty/simple local)
                        lines
                        (conj lines
@@ -38,16 +37,16 @@
                        pre
                        (string/join prefix "  ")
                        [gems local]
-                       (asString= gems params pre v)
+                       (asString= gems local pre v)
                        valueLines (:pretty/lines local)
                        lines
                        (into lines valueLines)]
                    [gems local lines])
                  (let [[gems local]
-                       (simpleScalar= gems params k)
+                       (simpleScalar= gems local k)
                        simpleKey (:pretty/simple local)
                        [gems local]
-                       (simpleScalar= gems params v)
+                       (simpleScalar= gems local v)
                        simpleValue (:pretty/simple local)
                        lines
                        (conj lines
