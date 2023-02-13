@@ -7,7 +7,7 @@
   ([gems params gem-kw]
    (let [gem
          {:facet/id          gem-kw
-          :facet/descriptors {:descriptors/roles {}}}
+          :facet/descriptors {:descriptors/roles {:a "b"}}}
          gems
          (assoc gems gem-kw gem)]
      [gems params])))

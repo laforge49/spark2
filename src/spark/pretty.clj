@@ -7,7 +7,15 @@
    (simpleScalar= gems params
                   (:pretty/value params)))
   ([gems params value]
-   [gems (into params {:pretty/simple [(pr-str value)]})]))
+   (let [s
+         (if (string? value)
+           value
+           (pr-str value))]
+   [gems (into params {:pretty/simple s})])))
+
+(defn structure?
+  [s]
+  (or (map? s)))
 
 (defn asString=
   ([gems params]
@@ -16,30 +24,43 @@
               (:pretty/value params)))
   ([gems params prefix value]
    (cond
-     (map? value)
-     (let [lines
+     (structure? value)
+     (let [[gems local lines]
            (reduce
-             (fn [lines [k v]]
-               (if (map? v)
-                 (let [lines
-                       (conj lines
-                             (string/join [prefix (pr-str k) ":"]))
-                       pre
-                       (string/join prefix "  ")
+             (fn [[gems local lines] [k v]]
+               (if (structure? v)
+                 (let [[gems local]
+                       (simpleScalar= gems params k)
+                       simpleKey (:pretty/simple local)
                        lines
                        (conj lines
-                             (string/join [pre (pr-str v)]))]
-                   lines)
-                 (conj lines
-                       (string/join [prefix (pr-str k) ": " (pr-str v)]))))
-             []
+                             (string/join [prefix simpleKey ":"]))
+                       pre
+                       (string/join prefix "  ")
+                       [gems local]
+                       (asString= gems params pre v)
+                       valueLines (:pretty/lines local)
+                       lines
+                       (into lines valueLines)]
+                   [gems local lines])
+                 (let [[gems local]
+                       (simpleScalar= gems params k)
+                       simpleKey (:pretty/simple local)
+                       [gems local]
+                       (simpleScalar= gems params v)
+                       simpleValue (:pretty/simple local)
+                       lines
+                       (conj lines
+                             (string/join [prefix simpleKey ": " simpleValue]))]
+                   [gems local lines])))
+             [gems params []]
              value)]
-       [gems (into params {:pretty/lines lines})])
+       [gems (into local {:pretty/lines lines})])
      :else
      (let [[gems local]
-           (simpleScalar= gems params prefix value)
-           simple (:pretty/simple local)]
-       [gems (into params {:pretty/lines [(string/join prefix simple)]})]))))
+           (simpleScalar= gems params value)
+           simpleValue (:pretty/simple local)]
+       [gems (into params {:pretty/lines [(string/join prefix simpleValue)]})]))))
 
 (defn debug=
   ([gems params]
