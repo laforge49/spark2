@@ -9,18 +9,6 @@
   ([gems params value]
    [gems (into params {:pretty/simple [(pr-str value)]})]))
 
-(defn prefixScalar=
-  ([gems params]
-   (prefixScalar= gems params
-            (:pretty/prefix params)
-            (:prefix/value params)))
-  ([gems params prefix value]
-   (let [[gems local]
-         (simpleScalar= gems params value)
-         sim (:pretty/simple local)
-         lines [string/join [prefix sim]]]
-     [gems into params {:pretty/prefixed lines}])))
-
 (defn asString=
   ([gems params]
    (asString= gems params
@@ -49,9 +37,9 @@
        [gems (into params {:pretty/lines lines})])
      :else
      (let [[gems local]
-           (prefixScalar= gems params prefix value)
-           prefixed (:pretty/prefixed local)]
-       [gems (into params {:pretty/lines [prefixed]})]))))
+           (simpleScalar= gems params prefix value)
+           simple (:pretty/simple local)]
+       [gems (into params {:pretty/lines [(string/join prefix simple)]})]))))
 
 (defn debug=
   ([gems params]
